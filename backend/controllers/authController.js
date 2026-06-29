@@ -72,3 +72,50 @@ export const login = async (req, res, next) => {
     next(error);
   }
 };
+
+// @desc    Update user profile (name / password)
+// @route   PUT /api/auth/profile
+export const updateProfile = async (req, res, next) => {
+  try {
+    const { name, currentPassword, newPassword } = req.body;
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+      res.status(404);
+      throw new Error('User not found');
+    }
+
+    // Update name if provided
+    if (name) {
+      user.name = name;
+    }
+
+    // Update password if provided
+    if (newPassword) {
+      if (!currentPassword) {
+        res.status(400);
+        throw new Error('Current password is required to change password');
+      }
+
+      const isMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!isMatch) {
+        res.status(401);
+        throw new Error('Current password is incorrect');
+      }
+
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(newPassword, salt);
+    }
+
+    await user.save();
+
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      token: generateToken(user._id),
+    });
+  } catch (error) {
+    next(error);
+  }
+};

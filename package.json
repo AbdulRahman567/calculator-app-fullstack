@@ -1,0 +1,24 @@
+{
+  "name": "calculator-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AbdulRahman567/calculator-app-fullstack.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AbdulRahman567/calculator-app-fullstack/issues"
+  },
+  "homepage": "https://github.com/AbdulRahman567/calculator-app-fullstack#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.3"
+  }
+}
